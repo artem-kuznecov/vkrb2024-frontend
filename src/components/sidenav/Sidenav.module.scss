@@ -1,0 +1,90 @@
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-block: 8px;
+
+  background: rgb(32 32 32);
+  color: #fff;
+
+  svg {
+    width: 55px;
+    height: 55px;
+    fill: #fff;
+  }
+
+  ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    gap: 32px;
+
+    li {
+      display: flex;
+      
+      a {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+
+        svg {
+          stroke: rgb(200 200 200);
+          stroke-width: 1.5;
+          fill: transparent;
+        }
+
+        &:hover {
+          background-color: rgb(64 64 64);
+          &[data-alias='dashboard'] svg {
+            animation: hop 1s linear;
+          }
+          &[data-alias='calculator'] svg {
+            animation: jump 1s ease-in-out;
+          }
+          svg {
+            stroke: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes jump {
+	0% {
+		transform: translateY(0);
+	}
+	25% {
+		transform: translateY(-10px);
+	}
+	50% {
+		transform: translateY(0);
+	}
+  75% {
+		transform: translateY(-10px);
+	}
+  100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes hop {
+	from {
+		transform: rotateY(0);
+	}
+	to {
+		transform: rotateY(360deg);
+	}
+}
