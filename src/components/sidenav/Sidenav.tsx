@@ -1,12 +1,13 @@
 import styles from'./Sidenav.module.scss'
 
 import Link from 'next/link'
+import cn from 'classnames'
 import { FoxIcon } from '@/ui/icons/FoxIcon'
 import { routes } from '@/data/routes'
 
-export const Sidenav = () => {
+export const Sidenav = ({ animatedLogo }: { animatedLogo: boolean }) => {
   return (
-    <aside className={styles.sidenav}>
+    <aside className={cn(styles.sidenav, { [styles.animated]: animatedLogo })}>
       <FoxIcon />
       <ul>
         {routes.map(route => (

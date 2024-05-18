@@ -14,10 +14,18 @@
   background: rgb(32 32 32);
   color: #fff;
 
+  &.animated  {
+    svg {
+      opacity: 1;
+    }
+  }
+
   svg {
+    opacity: 0;
     width: 55px;
     height: 55px;
     fill: #fff;
+    transition-delay: 1s;
   }
 
   ul {

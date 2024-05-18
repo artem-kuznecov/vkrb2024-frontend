@@ -1,0 +1,71 @@
+.loader {
+  position: absolute;
+  height: 100dvh;
+  width: 100dvw;
+  background: linear-gradient(45deg, rgb(128 128 128), rgb(255 255 255));
+
+  opacity: 1;
+
+  transition: all 2s;
+  transition-delay: 0.5s;
+
+  display: flex;
+  flex-direction: column;
+
+  svg {
+    fill: rgb(80 80 80);
+    animation: pulse 2s infinite ease-in-out;
+    position: absolute;
+    top: 100px;
+    left: 50px;
+  }
+
+  span {
+    background: linear-gradient(to right, rgb(45 45 45), rgb(200 200 200));
+    position: absolute;
+    top: 20dvh;
+    right: 0;
+    width: 50dvw;
+    border-radius: 64px 0 0 64px;
+    padding-left: 64px;
+    padding-block: 16px;
+
+    h1 {
+      font-size: 128px;
+      width: fit-content;
+      color: #fff;
+    }
+  }
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  
+    svg {
+      animation: none;
+      position: absolute;
+      top: 8px;
+      left: 22.5px;
+      width: 55px;
+      height: 55px;
+      fill: #fff;
+      transition: all 0.7s;
+      transition-delay: 0.3s;
+    }
+
+    span {
+      right: -50dvw;
+      transition: all 0.7s;
+    }
+  }
+
+  &.unmounted {
+    display: none;
+  }
+}
+
+@keyframes pulse {
+  0% {transform: none}
+  50% {transform: scale(0.9)}
+  100% {transform: none}
+}
