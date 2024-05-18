@@ -3,15 +3,16 @@
 import { useContext } from 'react'
 import { GlobalContext } from '@/app/providers'
 
-const Dashboard = () => {
+const Calculator = () => {
   const { username, setUsername } = useContext(GlobalContext)
+
   return (
     <div>
-      dashboard page
+      calculator page
       <p>name: {username}</p>
-      <button onClick={() => setUsername('new name')}>change name</button>
+      <button onClick={() => setUsername('new name from calculator')}>change name</button>
     </div>
   )
 }
 
-export default Dashboard
+export default Calculator

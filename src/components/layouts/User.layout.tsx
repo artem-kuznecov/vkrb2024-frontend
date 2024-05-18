@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Inter } from 'next/font/google'
 import { Sidenav } from '../sidenav/Sidenav'
 import { Loader } from '../loader/Loader'
+import { Providers } from '@/app/providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,11 +21,11 @@ export const UserLayout = ({ children }: { children: React.ReactNode }): React.J
 
   return (
     <body className={inter.className}>
-      <>
+      <Providers>
         <Sidenav animatedLogo={mounted} />
         <main>{children}</main>
         <Loader componentDidMount={mounted} loaderShouldUnmount={loaderHidden} />
-      </>
+      </Providers>
     </body>
   )
 }

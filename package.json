@@ -11,6 +11,8 @@
   "dependencies": {
     "classnames": "^2.5.1",
     "lucide-react": "^0.378.0",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18"

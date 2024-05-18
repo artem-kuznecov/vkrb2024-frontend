@@ -12,7 +12,7 @@ export const routes: RouteType[] = [
   {
     alias_RU: 'калькулятор',
     alias_EN: 'calculator',
-    url: '/',
+    url: '/calculator',
     icon: Calculator
   }
 ]
