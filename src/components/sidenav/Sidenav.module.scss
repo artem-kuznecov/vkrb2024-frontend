@@ -61,20 +61,14 @@
           background: rgb(128 128 128);
           svg {
             stroke: #fff;
+            animation: hop 1s linear;
           }
         }
 
         &:not([data-active='true']):hover {
           background: rgb(64 64 64);
-          // &[data-alias='dashboard'] svg {
-          //   animation: hop 1s linear;
-          // }
-          // &[data-alias='calculator'] svg {
-          //   animation: jump 1s ease-in-out;
-          // }
           svg {
             stroke: #fff;
-            animation: hop 1s linear
           }
         }
       }
