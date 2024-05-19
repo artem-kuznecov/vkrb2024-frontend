@@ -1,7 +1,31 @@
 .dashboard {
   padding: 16px;
+
+  form {
+    margin-bottom: 48px;
+    &:active {
+      margin-bottom: 50px;
+      label {
+        margin-left: 4px;
+        font-size: 17px;
+      }
+    }
+
+    label {
+      padding: 16px 24px;
+      border-radius: 8px;
+  
+      font-size: 18px;
+  
+      background: rgb(144 238 144);
+      box-shadow: 0 0 20px rgb(160 160 160);
+  
+      border: none;
+      cursor: pointer;
+    }
+  }
+
   div[data-grid] {
-    // background: lightcoral;
     display: grid;
     grid-template-columns: repeat(auto-fit, 380px);
     grid-auto-rows: max(100px, auto);
@@ -13,7 +37,7 @@
       height: 100px;
       border-radius: 16px;
       padding: 8px;
-      box-shadow: 0 0 20px rgb(128 128 128);
+      box-shadow: 0 0 20px rgb(160 160 160);
 
       position: relative;
 
@@ -55,7 +79,7 @@
             }
           }
 
-          &[data-open='true'] {
+          &[data-open='false'] {
             svg {
               &[data-left] {
                 transform: translateX(-20%) rotate(45deg);
