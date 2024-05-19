@@ -1,0 +1,98 @@
+.dashboard {
+  padding: 16px;
+  div[data-grid] {
+    // background: lightcoral;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 380px);
+    grid-auto-rows: max(100px, auto);
+    gap: 64px;
+    row-gap: 48px;
+
+    span:not([data-icon]) {
+      background: #fff;
+      height: 100px;
+      border-radius: 16px;
+      padding: 8px;
+      box-shadow: 0 0 20px rgb(128 128 128);
+
+      position: relative;
+
+      transition: height 0.3s;
+
+      overflow: hidden;
+
+      &[data-open='true'] {
+        height: 250px;
+        z-index: 2;
+      }
+
+      div[data-header] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 24px;
+
+        h2 {
+          font-weight: 400;
+        }
+
+        span[data-icon] {
+          position: relative;
+          height: 100%;
+          width: 24px;
+          cursor: pointer;
+
+          svg {
+            position: absolute;
+            stroke: rgb(64 64 64);
+            pointer-events: none;
+            transition: all 0.3s;
+            &[data-left] {
+              transform: translateX(-20%) rotate(-45deg);
+            }
+            &[data-right] {
+              transform: translateX(25%) rotate(45deg);
+            }
+          }
+
+          &[data-open='true'] {
+            svg {
+              &[data-left] {
+                transform: translateX(-20%) rotate(45deg);
+              }
+              &[data-right] {
+                transform: translateX(25%) rotate(-45deg);
+              }
+            }
+          }
+        }
+      }
+
+      div[data-info] {
+        margin-top: 48px;
+        transition: all 0.3s;
+
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        &[data-open='false'] {
+          filter: blur(5px);
+          user-select: none;
+
+          p[data-description] {
+            opacity: 0;
+            transition: none;
+          }
+        }
+
+        p[data-description] {
+          position: absolute;
+          bottom: 8px;
+          transition: all 1s;
+          transition-delay: 0.3s;
+        }
+      }
+    }
+  }
+}
