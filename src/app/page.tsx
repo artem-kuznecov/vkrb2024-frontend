@@ -2,26 +2,20 @@
 
 import styles from'./page.module.scss'
 
-import { MouseEvent, ChangeEvent, useContext } from 'react'
+import { MouseEvent, ChangeEvent, useEffect, useState, useContext } from 'react'
 import { Minus } from 'lucide-react'
+import { getCookie } from 'cookies-next'
 import { format } from 'date-fns'
 import { Header } from '@/ui/header/Header'
-import { GlobalContext } from '@/app/providers'
 import { EmptyData } from '@/ui/empty-data/EmptyData'
+import { getAllKnowledgebases, uploadKnowledgebase } from '@/utils/api/mlv.api'
 
-const mockdata: any[] = [
-  {
-    'uuid': '33c02ab5-479e-43cf-9fc7-110be14c930a',
-    'id': '37cb2247-3b2e-4784-8fc1-f67291e4080e',
-    'shortName': 'Сумма двух чисел',
-    'uploadedDate': '2024-05-21T07:08:20Z',
-    'parametersCount': 3,
-    'username': 'username1'
-  }
-]
+import { GlobalContext } from './providers'
 
 const Dashboard = () => {
-  const { username } = useContext(GlobalContext)
+  const { setKbValue } = useContext(GlobalContext)
+  const [trigger, setTrigger] = useState<boolean>(false)
+  const [knowledgebases, setKnowledgebases] = useState<any[]>([])
 
   const handleSpanClick = (e: MouseEvent<HTMLSpanElement>) => {
     const target = e.target as HTMLSpanElement
@@ -36,20 +30,36 @@ const Dashboard = () => {
   const filePick = async (e: ChangeEvent<HTMLInputElement>) => {
     let formData = new FormData()
     formData.append('file', e.target.files?.item(0) as Blob)
-    formData.append('username', username as string)
+    formData.append('username', getCookie('username') as string)
+    uploadKnowledgebase(formData).then(response => {
+      console.log(response)
+      setTrigger(prev => !prev)
+    })
+    e.target.value = ''
+    return
   }
+
+  useEffect(() => {
+    const cookie_username = getCookie('username')
+    getAllKnowledgebases(cookie_username as string)
+      .then(response => response.data)
+      .then((data: any[]) => {
+        setKnowledgebases(data)
+        setKbValue(data)
+      })
+  }, [trigger, setKbValue])
 
   return (
     <div className={styles.dashboard}>
       <Header text='Дашборд'/>
       <form>
-        <input id='knowledgebase-input' type='file' accept='.yaml, .yml' hidden onChange={e => filePick(e)}/>
+        <input id='knowledgebase-input' type='file' accept='.yaml, .yml' hidden onChange={e => filePick(e)} />
         <label htmlFor='knowledgebase-input'>Загрузить базу знаний</label>
       </form>
       <div data-grid>
         {
-          mockdata.length ?
-            mockdata.map(byte => (
+          knowledgebases.length ?
+            knowledgebases.map(byte => (
               <span data-open={false} key={byte.uuid}>
                 <div data-header>
                   <h2>{byte.shortName}</h2>

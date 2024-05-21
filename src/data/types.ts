@@ -14,3 +14,15 @@ export interface ContextInterface {
   knowledgebases?: any
   setKnowledgebases?: Dispatch<SetStateAction<any>> | any
 }
+
+export type LoginDataType = {
+  username: string,
+  password: string,
+  rememberMe: boolean
+}
+
+export type RegisterDataType = {
+  username: string,
+  password: string,
+  repassword: string,
+}
