@@ -4,71 +4,20 @@ import styles from'./page.module.scss'
 
 import { MouseEvent, ChangeEvent, useContext } from 'react'
 import { Minus } from 'lucide-react'
+import { format } from 'date-fns'
 import { Header } from '@/ui/header/Header'
 import { GlobalContext } from '@/app/providers'
 import { EmptyData } from '@/ui/empty-data/EmptyData'
 
 const mockdata: any[] = [
   {
-    'uuid': '1',
-    'name': 'math-sum.yamltest',
-    'username': 'username3'
-  },
-  {
-    'uuid': '2',
-    'name': 'math-formula.yaml',
-    'username': 'username3'
-  },
-  {
-    'uuid': '3',
-    'name': 'math-formula.yaml',
-    'username': 'username3'
-  },
-  {
-    'uuid': '4',
-    'name': 'math-sum.yaml',
-    'username': 'username3'
-  },
-  {
-    'uuid': '5',
-    'name': 'math-formula.yaml',
-    'username': 'username3'
-  },
-  // {
-  //   'uuid': '6',
-  //   'name': 'math-formula.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': '7',
-  //   'name': 'math-sum.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': '8',
-  //   'name': 'math-formula.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': 'e9',
-  //   'name': 'math-formula.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': '10',
-  //   'name': 'math-sum.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': '11',
-  //   'name': 'math-formula.yaml',
-  //   'username': 'username3'
-  // },
-  // {
-  //   'uuid': '12',
-  //   'name': 'math-formula.yaml',
-  //   'username': 'username3'
-  // }
+    'uuid': '33c02ab5-479e-43cf-9fc7-110be14c930a',
+    'id': '37cb2247-3b2e-4784-8fc1-f67291e4080e',
+    'shortName': 'Сумма двух чисел',
+    'uploadedDate': '2024-05-21T07:08:20Z',
+    'parametersCount': 3,
+    'username': 'username1'
+  }
 ]
 
 const Dashboard = () => {
@@ -103,19 +52,16 @@ const Dashboard = () => {
             mockdata.map(byte => (
               <span data-open={false} key={byte.uuid}>
                 <div data-header>
-                  <h2>{byte.name}</h2>
+                  <h2>{byte.shortName}</h2>
                   <span data-icon data-open={false} onClick={e => handleSpanClick(e)}>
                     <Minus data-left />
                     <Minus data-right />
                   </span>
                 </div>
                 <div data-info data-open={false}>
-                  <p>Переменных: 3</p>
-                  <p>Количество расчетов: 3</p>
-                  <p>Добавлена: 3 февраля 2021</p>
-                  <p data-description>
-                Математика(формула) - такая то база знаний и еще какое-то описание
-                  </p>
+                  <p>Количество параметров: {byte.parametersCount}</p>
+                  <p>Добавлена {format(Date.parse(byte.uploadedDate), 'dd.MM.yyyy')}</p>
+                  <p data-description>UUID: {byte.uuid}</p>
                 </div>
               </span>
             ))
