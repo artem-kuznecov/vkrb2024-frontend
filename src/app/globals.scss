@@ -97,3 +97,14 @@ div.not-found {
     }
   }
 }
+
+// MUI Snack
+.MuiAlert-root.MuiAlert-colorSuccess.MuiAlert-filledSuccess {
+  background: rgb(144 238 144 / 65%);
+  color: #000;
+}
+
+.MuiAlert-root.MuiAlert-colorError.MuiAlert-filledError {
+  background: rgb(238 158 144 / 85%);
+  color: #000;
+}
