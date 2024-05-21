@@ -74,6 +74,36 @@
       }
     }
   }
+
+  footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    * {
+      transition: transform 0.3s;
+    }
+
+    svg {
+      stroke: rgb(200 200 200);
+      stroke-width: 1.5;
+      fill: transparent;
+      transition-delay: 0s;
+
+      width: 70%;
+      height: 70%;
+    }
+
+    &:hover {
+      svg {
+        stroke: #fff;
+        line, polyline {
+          transform: translateX(4px);
+        }
+      }
+    }
+  }
 }
 
 @keyframes jump {
