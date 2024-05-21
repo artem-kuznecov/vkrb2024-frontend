@@ -2,50 +2,15 @@
 
 import styles from'./Calculator.module.scss'
 
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import { ChangeEvent, MouseEvent, useEffect, useState, useContext } from 'react'
 import { SquareRadical, SquareDivide, SquareFunction } from 'lucide-react'
 // import { useContext } from 'react'
 // import { GlobalContext } from '@/app/providers'
 import { Header } from '@/ui/header/Header'
 import { LoadSpinner } from '@/components/load-spinner/Spinner'
-
-const mockdata: any[] = [
-  {
-    'uuid': '33c02ab5-479e-43cf-9fc7-110be14c930a',
-    'id': '37cb2247-3b2e-4784-8fc1-f67291e4080e',
-    'shortName': 'Сумма двух чисел',
-    'uploadedDate': '2024-05-21T07:08:20Z',
-    'parametersCount': 3,
-    'username': 'username1'
-  }
-]
-
-const params: any[] = [
-  {
-    'uuid': 'fcbc85d7-7ced-4e0d-8c4f-ab114d8cd810',
-    'id': '3efb49fd-ccbd-473e-bc82-080827f40567',
-    'shortName': 'number_2',
-    'type': 'double',
-    'defaultValue': '0',
-    'isSecret': false
-  },
-  {
-    'uuid': '040ff199-9fd2-4c36-b3aa-97adecad439b',
-    'id': '9ea9a909-5b1c-4e81-926f-0be856c4bcb8',
-    'shortName': 'Summary',
-    'type': 'double',
-    'defaultValue': '',
-    'isSecret': false
-  },
-  {
-    'uuid': '5898dd95-6383-42b8-850e-802017004a9f',
-    'id': 'f8a49e5c-098c-471b-9a22-bb5b6d294bf8',
-    'shortName': 'number_1',
-    'type': 'double',
-    'defaultValue': '0',
-    'isSecret': false
-  }
-]
+import { GlobalContext } from '../providers'
+import { getCookie } from 'cookies-next'
+import { getKnowledgebaseParameters, getAllKnowledgebases, calculateKnowledgebase } from '@/utils/api/mlv.api'
 
 type typeStringed = {
   [key:string]: string
@@ -56,36 +21,33 @@ type testeType = {
   output: string[]
 }
 
-const response: typeStringed = {
-  // '9ea9a909-5b1c-4e81-926f-0be856c4bcb8': '5'
-}
-
 const Calculator = () => {
-  // const { username, setUsername } = useContext(GlobalContext)
+  const { kbValue, setKbValue } = useContext(GlobalContext)
   const [chosenBaseUUID, setChosenBaseUUID] = useState<string>('')
-  // const [baseParameters, setBaseparameters] = useState([])
   const [formData, setFormData] = useState<testeType>({
     input: {},
     output: []
   })
-  const [loadingParameters] = useState<boolean>(false)
-  const [loadingResponse] = useState<boolean>(false)
+  const [parameters, setParameters] = useState<any[]>([])
+  const [calculations, setCalculations] = useState<any>([])
+  const [loadingParameters, setLoadingParameters] = useState<boolean>(false)
+  const [loadingResponse, setLoadingResponse] = useState<boolean>(false)
 
   const handleUpdateFormData = (e: ChangeEvent<HTMLInputElement>, parameter: any) => {
     let newFormData: testeType = formData
     const target = e.target as HTMLInputElement
     if (target.name === 'output-checkbox') {
-      if (target.checked === true) newFormData = { ...formData, output: [...formData.output, parameter.uuid ] }
-      else newFormData = { ...formData, output: formData.output.filter(b => b !== parameter.uuid) }
+      if (target.checked === true) newFormData = { ...formData, output: [...formData.output, parameter.id ] }
+      else newFormData = { ...formData, output: formData.output.filter(b => b !== parameter.id) }
     }
     if (target.name === 'input-checkbox') {
       if (!target.value) {
         const newInput = newFormData.input
-        delete newInput[parameter.uuid]
+        delete newInput[parameter.id]
         newFormData = { ...formData, input: newInput }
       }
       else {
-        newFormData = { ...newFormData, input: { ...newFormData.input, [parameter.uuid]: target.value } }
+        newFormData = { ...newFormData, input: { ...newFormData.input, [parameter.id]: target.value } }
       }
     }
     setFormData(newFormData)
@@ -93,23 +55,53 @@ const Calculator = () => {
 
   const handleCalculate = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log(formData)
+    setLoadingResponse(true)
+    calculateKnowledgebase(chosenBaseUUID, formData)
+      .then(response => {
+        setCalculations(response.data)
+        setLoadingResponse(false)
+      })
+    document.querySelectorAll('input').forEach((element) => {
+      const input = element as HTMLInputElement
+      input.value = ''
+      input.checked = false
+    })
+    setFormData({ input: {}, output: [] })
+    // console.log(formData)
   }
 
   useEffect(() => {
-    console.log('base changed')
+    if (chosenBaseUUID) {
+      setLoadingParameters(true)
+      getKnowledgebaseParameters(chosenBaseUUID)
+        .then(response => response.data)
+        .then(data => {
+          setParameters(data)
+          setLoadingParameters(false)
+        })
+    }
   }, [chosenBaseUUID])
+
+  useEffect(() => {
+    if (!kbValue.length || kbValue) {
+      const cookie_username = getCookie('username')
+      getAllKnowledgebases(cookie_username as string)
+        .then(response => response.data)
+        .then((data: any[]) => {
+          setKbValue(data)
+        })
+    }
+  })
 
   return (
     <div className={styles.calculator}>
       <Header text='Калькулятор' />
-      {/* <p>{JSON.stringify(formData)}</p> */}
       <span data-content-wrapper>
         <div data-content>
           <div data-knowledgebase-selection>
             <h2>Выберите базу знаний:</h2>
             <ul>
-              {mockdata.map(byte => (
+              {kbValue.map((byte: any) => (
                 <li key={byte.uuid + '_kb'} data-chosen={chosenBaseUUID === byte.uuid} onClick={() => setChosenBaseUUID(byte.uuid)}>
                   <p>{byte.shortName}</p>
                 </li>
@@ -123,7 +115,7 @@ const Calculator = () => {
               !loadingParameters ?
                 <>
                   {
-                    params.length ?
+                    parameters.length ?
                       <>
                         <table>
                           <thead>
@@ -142,16 +134,16 @@ const Calculator = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {params.map(parameter => (
+                            {parameters.map(parameter => (
                               <tr key={parameter.uuid + '_row'}>
                                 <td>{parameter.shortName}</td>
                                 <td>{parameter.type}</td>
                                 <td>
-                                  <input type="text" disabled={formData.output.some(p => p === parameter.uuid)} name='input-checkbox' placeholder='Значение' onChange={(e) => handleUpdateFormData(e, parameter)} />
+                                  <input type="text" disabled={formData.output.some(p => p === parameter.id)} name='input-checkbox' placeholder='Значение' onChange={(e) => handleUpdateFormData(e, parameter)} />
                                 </td>
                                 <td>
                                   <div data-checkbox-holder>
-                                    <input id={parameter.uuid + '_input'} type="checkbox" disabled={Object.keys(formData.input).some(p => p === parameter.uuid)} name='output-checkbox' onChange={(e) => handleUpdateFormData(e, parameter)} />
+                                    <input id={parameter.uuid + '_input'} type="checkbox" disabled={Object.keys(formData.input).some(p => p === parameter.id)} name='output-checkbox' onChange={(e) => handleUpdateFormData(e, parameter)} />
                                     <label htmlFor={parameter.uuid + '_input'}>Рассчитать</label>
                                   </div>
                                 </td>
@@ -173,7 +165,7 @@ const Calculator = () => {
               !loadingResponse ?
                 <>
                   {
-                    Object.keys(response).length ?
+                    calculations.found && Object.keys(calculations.found).length ?
                       <table>
                         <thead>
                           <tr>
@@ -183,14 +175,14 @@ const Calculator = () => {
                           </tr>
                         </thead>
                         {
-                          Object.keys(response).map(byte => {
-                            const parameter = params.find(param => param.id === byte)
+                          Object.keys(calculations.found).map(byte => {
+                            const parameter = parameters.find(param => param.id === byte)
                             return (
                               <tbody key={parameter.uuid + '_answer'}>
                                 <tr>
                                   <td>{parameter.id}</td>
                                   <td>{parameter.shortName}</td>
-                                  <td>{response[parameter.id]}</td>
+                                  <td>{calculations.found[byte]}</td>
                                 </tr>
                               </tbody>
                             )
