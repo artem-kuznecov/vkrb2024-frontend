@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/home/artem-kuznecov/Desktop/DIPLOM_newest/NEWEST_VERSION/front/src/app/layout":["static/media/2e5f5e513f4dc014-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';
