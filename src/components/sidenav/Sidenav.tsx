@@ -17,6 +17,7 @@ export const Sidenav = ({ animatedLogo }: { animatedLogo: boolean }) => {
     const logoutResponse = await logout(username_cookie as string)
     if (logoutResponse.success) {
       deleteCookie('username')
+      deleteCookie('remember_user')
       window.location.reload()
     }
     return

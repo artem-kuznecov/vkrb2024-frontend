@@ -60,6 +60,7 @@ const AuthenticationPage = ({ params }: { params: { authType: string } }) => {
     if (params.authType === 'login') {
       const data = await login(requestData as LoginDataType)
       if (data.success === true) {
+        if (requestData.rememberMe) setCookie('remember_user', 'true')
         setCookie('username', data.username)
         router.push('/')
       } else setSnackState({ open: true, text: data.message, severity: 'error' })
