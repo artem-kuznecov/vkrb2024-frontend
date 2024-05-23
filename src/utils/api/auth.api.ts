@@ -7,13 +7,24 @@ export async function login (requestData: LoginDataType) {
     username: requestData.username,
     password: requestData.password,
   }
-  const response = await axios.post(process.env.NEXT_PUBLIC_AUTH_SERVER_URL + '/login', requestBody)
+  const response = await axios.post('http://server:8080/api/auth' + '/login', requestBody)
+  // const response = await axios({
+  //   method: 'post',
+  //   baseURL: 'server',
+  //   url: '/login',
+  //   data: requestBody
+  // })
   const data = response.data
   return data
 }
 
 export async function logout (username: string) {
-  const response = await axios.delete(process.env.NEXT_PUBLIC_AUTH_SERVER_URL + `/${username}/logout`)
+  const response = await axios.delete('http://server:8080/api/auth' + `/${username}/logout`)
+  // const response = await axios({
+  //   method: 'delete',
+  //   baseURL: 'server',
+  //   url: `/${username}/logout`,
+  // })
   const data = response.data
   return data
 }
@@ -23,7 +34,13 @@ export async function register (requestData: RegisterDataType) {
     username: requestData.username,
     password: requestData.password,
   }
-  const response = await axios.post(process.env.NEXT_PUBLIC_AUTH_SERVER_URL + '/register', requestBody)
+  const response = await axios.post('http://server:8080/api/auth' + '/register', requestBody)
+  // const response = await axios({
+  //   method: 'post',
+  //   baseURL: 'server',
+  //   url: '/register',
+  //   data: requestBody
+  // })
   const data = response.data
   return data
 }
