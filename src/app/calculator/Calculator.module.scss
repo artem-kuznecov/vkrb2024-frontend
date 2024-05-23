@@ -14,6 +14,11 @@
       border-radius: 16px;
       box-shadow: 0 0 20px rgb(160 160 160);
       padding: 16px;
+      height: 666px;
+      overflow-y: scroll;
+
+      display: flex;
+      flex-direction: column;
 
       h2 {
         font-weight: 400;
@@ -23,6 +28,20 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
+        // border: 1px solid red;
+        flex: 1;
+        // background: linear-gradient(to bottom, transparent, rgb(255 0 0 / 5%));
+        // filter: blur(20px);
+        position: relative;
+
+        // &::after {
+        //   position: absolute;
+        //   top: 0;
+        //   content: '';
+        //   background: linear-gradient(to bottom, transparent 70%, rgb(255 255 255 / 100%));
+        //   height: 604px;
+        //   width: 100%;
+        // }
 
         li {
           margin-top: 16px;
@@ -128,16 +147,6 @@
   
         
       }
-
-     
-
-      
-      // background: lightblue;
-
-      // li {
-      //   background: lightcoral;
-      //   padding: 16px;
-      // }
     }
 
     button {
@@ -148,7 +157,6 @@
       font-size: 16px;
   
       background: rgb(144 238 144);
-      // box-shadow: 0 0 20px rgb(160 160 160);
   
       border: none;
       cursor: pointer;
@@ -159,6 +167,44 @@
 
       &:disabled {
         background: rgb(200 200 200);
+      }
+    }
+
+    div[data-no-kb-chosen] {
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      div {
+        height: 60%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        svg {
+          height: 100%;
+          width: 20%;
+          stroke: rgb(200 200 200);
+          stroke-width: 1.5;
+
+          // &:first-child {
+          //   transform: rotate(20deg);
+          // }
+          // &:nth-child(2) {
+          //   transform: translateY(-16px);
+          // }
+          // &:nth-child(3) {
+          //   transform: rotate(-10deg);
+          // }
+        }
+      }
+
+      p {
+        font-size: 24px;
+        color: rgb(160 160 160);
+        margin-top: 16px;
       }
     }
   }

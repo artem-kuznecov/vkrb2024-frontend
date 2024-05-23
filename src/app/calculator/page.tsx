@@ -3,7 +3,7 @@
 import styles from'./Calculator.module.scss'
 
 import { ChangeEvent, MouseEvent, useEffect, useState, useContext } from 'react'
-import { SquareRadical, SquareDivide, SquareFunction } from 'lucide-react'
+import { SquareRadical, SquareDivide, SquareFunction, Pilcrow, Variable, Sigma } from 'lucide-react'
 // import { useContext } from 'react'
 // import { GlobalContext } from '@/app/providers'
 import { Header } from '@/ui/header/Header'
@@ -153,7 +153,14 @@ const Calculator = () => {
                         </table>
                       </>
                       :
-                      <p>не выбрана бз</p>
+                      <div data-no-kb-chosen>
+                        <div>
+                          <Pilcrow />
+                          <Variable />
+                          <Sigma />
+                        </div>
+                        <p>База знаний не выбрана</p>
+                      </div>
                   }
                 </>
                 :
